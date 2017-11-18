@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@android:color/transparent">
+
+    <ImageView
+        android:id="@+id/iv_pullrefresh_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/preloader_2_00000"
+        />
+
+    <!--<TextView
+        android:id="@+id/tv_pullrefresh_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/iv_pullrefresh_head"
+        android:text="下拉刷新"/>-->
+</RelativeLayout>

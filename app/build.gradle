@@ -1,0 +1,172 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion '26.0.3'
+    defaultConfig {
+        applicationId "com.saberrrc.cmy"
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+
+        release {
+            storeFile file("./saberrrc.jks")
+            storePassword "saberrrc"
+            keyAlias "saberrrc"
+            keyPassword "saberrrc"
+        }
+    }
+
+    buildTypes {
+        debug {
+            initDebugField(it)
+        }
+        release {
+            def manifestFile = './app/src/main/java/com/saberrrc/cmy/common/buildconfig/AppBuildConfig.java'
+            def updatedContent = new File(manifestFile).getText('UTF-8').replaceAll("private static HttpConfigType httpConfigType = HttpConfigType.*", "private static HttpConfigType httpConfigType = HttpConfigType." + project.property("build_env") + ";")
+            new File(manifestFile).write(updatedContent, 'UTF-8')
+            initReleaseField(it)
+            minifyEnabled true
+            shrinkResources true//去掉不用资源
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    // 多渠道打包
+    productFlavors {
+        cmy {}
+//        tencent {}
+//        xiaomi {}
+//        huawei {}
+//        kuanwang {}
+//        baidu {}
+//        mumayi {}
+//        yingyonghui {}
+    }
+
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+    }
+
+    //as3.0多渠道打包
+    flavorDimensions "color"
+    productFlavors {
+        shanlin {
+            //每个渠道多家一个这个配置
+            dimension "color"
+        }
+        tencent {
+            dimension "color"
+        }
+        xiaomi {
+            dimension "color"
+        }
+        huawei {
+            dimension "color"
+        }
+        kushichang {
+            dimension "color"
+        }
+    }
+
+    //as3.0.0多渠道打包
+    applicationVariants.all {
+        outputs.all {
+            // 输出apk名称
+            def newApkName
+            if (buildType.zipAlignEnabled) {
+                newApkName = "saberrrc_${defaultConfig.versionName}_${productFlavors[0].name}.apk"
+            } else {
+                newApkName = "saberrrc_${defaultConfig.versionName}_${productFlavors[0].name}.apk"
+            }
+            outputFileName = newApkName
+        }
+    }
+
+    //as3.0.0之前多渠道打包命名≤
+//    applicationVariants.all { variant ->
+//        variant.outputs.each { output ->
+//            output.outputFile = new File(
+//                    output.outputFile.parent + "/${variant.buildType.name}",
+//                    "cmy-${variant.versionName}-${variant.productFlavors[0].name}.apk".toLowerCase())
+//        }
+//    }
+}
+
+static def devHttpUrl() {
+    "\"https://loanstore.sd-bao.com/app/v1/\""
+}
+
+static def devJSUrl() {
+    "\"http://120.27.220.25/index.html#/terminal/advertisement\""
+}
+
+static def initDebugField(buildType) {
+    buildType.buildConfigField("String", "HTTP_URL", devHttpUrl())
+    buildType.buildConfigField("String", "JS_URL", devJSUrl())
+}
+
+static def initReleaseField(buildType) {
+    initDebugField(buildType)
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    //    compile 'com.android.support:appcompat-v7:25.4.0'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:design:26.1.0'
+    testCompile 'junit:junit:4.12'
+    //retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+    /*rxjava*/
+    compile 'io.reactivex.rxjava2:rxjava:2.1.3'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    //dagger2
+    compile 'com.google.dagger:dagger:2.11'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+    //butterknife
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    /*glide + okhttp3-integration*/
+    compile 'com.android.support:support-v4:26.1.0'
+    compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
+    compile 'jp.wasabeef:glide-transformations:2.0.2'
+    //autolayout
+    compile 'com.zhy:autolayout:1.4.5'
+    /*eventbus*/
+    compile 'org.greenrobot:eventbus:3.0.0'
+    /*LeakCanary*/
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    //banner
+    //    compile 'com.youth.banner:banner:1.4.10'
+    //自动获取短信验证码
+    compile 'tech.michaelx.authcode:authcode:1.0.0'
+}
+
+//解决com.android.support依赖问题
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion '25.3.1'
+            }
+        }
+    }
+}

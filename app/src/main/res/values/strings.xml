@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">CMY</string>
+
+    <string name="pull_to_refresh_pull_label">下拉刷新…</string>
+    <string name="pull_to_refresh_release_label">放开以刷新…</string>
+    <string name="pull_to_refresh_refreshing_label">正在载入…</string>
+    <string name="pull_to_refresh_load_more_release">松开加载更多</string>
+    <string name="pull_to_refresh_load_more_up_move">上拉加载更多</string>
+    <string name="listView_loading">正在载入...</string>
+
+</resources>
