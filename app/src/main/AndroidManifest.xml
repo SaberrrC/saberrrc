@@ -45,7 +45,7 @@
         <activity
             android:name=".ui.act.SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashThemeFullScreen"
+            android:theme="@style/FullScreenTheme"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
