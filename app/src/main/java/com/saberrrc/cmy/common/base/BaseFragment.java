@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,12 +71,6 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        MPermissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
     public View creatViewFromId(int id) {
         return LayoutInflater.from(getActivity()).inflate(id, null, false);
     }
@@ -86,6 +81,10 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
 
     public void killActivity(Class<?> cls) {
         ActManager.getInstance().killActivity(cls);
+    }
+
+    public void killActivity(AppCompatActivity activity) {
+        ActManager.getInstance().killActivity(activity);
     }
 
     public void killFragment(Class<?>... cls) {
@@ -107,5 +106,11 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     public void setTransAnim(boolean transAnim) {
         BaseActivity activity = (BaseActivity) getActivity();
         activity.setTransAnim(transAnim);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        MPermissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

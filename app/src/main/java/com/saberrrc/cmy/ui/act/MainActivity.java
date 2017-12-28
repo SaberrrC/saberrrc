@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     }
 
     @Override
-    public void initData() {
+    public void init() {
         setTransAnim(false);
         initTab();
         CommonUtils.checkPermission(this, new MPermissionUtils.OnPermissionListener() {

@@ -56,7 +56,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AutoLayoutAc
         if (mPresenter != null) {
             mPresenter.attachView(this);
         }
-        initData();
+        init();
     }
 
     @Override
@@ -131,12 +131,12 @@ public abstract class BaseActivity<T extends BasePresenter> extends AutoLayoutAc
     /**
      * 初始化数据
      */
-    public abstract void initData();
+    public abstract void init();
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ActManager.getInstance().finishActivity(this);
+        ActManager.getInstance().killActivity(this);
         if (mPresenter != null)
             mPresenter.detachView();
         mUnBinder.unbind();

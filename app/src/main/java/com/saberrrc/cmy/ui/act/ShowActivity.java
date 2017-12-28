@@ -23,7 +23,7 @@ public class ShowActivity extends BaseActivity<ShowPresenter> implements ShowCon
     }
 
     @Override
-    public void initData() {
+    public void init() {
         Intent intent = getIntent();
         try {
             Class<BaseFragment> fragmentClass = (Class<BaseFragment>) intent.getSerializableExtra(Constant.SHOW_ACTIVITY.CLASSNAME);

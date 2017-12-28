@@ -46,7 +46,7 @@ public class ActManager {
     /**
      * 结束指定的Activity
      */
-    public void finishActivity(AppCompatActivity activity) {
+    public void killActivity(AppCompatActivity activity) {
         if (activity != null) {
             activityStack.remove(activity);
             activity.finish();
@@ -56,14 +56,14 @@ public class ActManager {
     /**
      * 结束指定类名的Activity
      */
-    public void finishActivity(Class<?>... cls) {
+    public void killActivity(Class<?>... cls) {
         if (cls == null || cls.length == 0) {
             return;
         }
         for (AppCompatActivity activity : activityStack) {
             for (Class<?> cl : cls) {
                 if (activity.getClass().equals(cl)) {
-                    finishActivity(activity);
+                    killActivity(activity);
                 }
             }
         }
@@ -96,7 +96,7 @@ public class ActManager {
     /**
      * 结束承܉Activity
      */
-    public void finishAllActivity() {
+    public void killAllActivity() {
         for (AppCompatActivity appCompatActivity : activityStack) {
             if (appCompatActivity != null) {
                 appCompatActivity.finish();
@@ -110,7 +110,7 @@ public class ActManager {
      */
     public void AppExit() {
         try {
-            finishAllActivity();
+            killAllActivity();
             ActivityManager activityMgr = (ActivityManager) App.getInstance().getSystemService(Context.ACTIVITY_SERVICE);
             activityMgr.restartPackage(App.getInstance().getPackageName());
             System.exit(0);

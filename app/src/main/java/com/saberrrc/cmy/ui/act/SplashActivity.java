@@ -26,7 +26,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
     }
 
     @Override
-    public void initData() {
+    public void init() {
         //设置状态栏颜色
         //        StatusBarUtils.setColor(this, Color.TRANSPARENT);
         setTransAnim(false);
