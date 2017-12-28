@@ -41,6 +41,25 @@ public abstract class BaseActivity<T extends BasePresenter> extends AutoLayoutAc
     private OnHideKeyBroadListener mOnHideKeyBroadListener;
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        int layoutId = initLayout();
+        if (layoutId == 0) {
+            throw new RuntimeException("请在 initLayout 方法中传入有效的布局id");
+        }
+        setContentView(layoutId);
+        ActManager.getInstance().addActivity(this);
+        mUnBinder = ButterKnife.bind(this);
+        mContext = this;
+        initInject();
+        // StatusBarUtils.setColor(this, Color.TRANSPARENT);
+        if (mPresenter != null) {
+            mPresenter.attachView(this);
+        }
+        initData();
+    }
+
+    @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             // 获得当前得到焦点的View，一般情况下就是EditText（特殊情况就是轨迹求或者实体案件会移动焦点）
@@ -94,25 +113,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AutoLayoutAc
         }
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        int layoutId = initLayout();
-        if (layoutId == 0) {
-            throw new RuntimeException("请在 initLayout 方法中传入有效的布局id");
-        }
-        setContentView(layoutId);
-        mUnBinder = ButterKnife.bind(this);
-        mContext = this;
-        initInject();
-        ActManager.getInstance().addActivity(this);
-        // StatusBarUtils.setColor(this, Color.TRANSPARENT);
-        if (mPresenter != null) {
-            mPresenter.attachView(this);
-        }
-        initData();
-    }
-
     protected abstract void initInject();
 
     protected ActivityComponent getActivityComponent() {
@@ -136,7 +136,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AutoLayoutAc
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ActManager.getInstance().removeActivity(this);
+        ActManager.getInstance().finishActivity(this);
         if (mPresenter != null)
             mPresenter.detachView();
         mUnBinder.unbind();

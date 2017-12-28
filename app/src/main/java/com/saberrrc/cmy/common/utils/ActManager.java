@@ -1,58 +1,83 @@
 package com.saberrrc.cmy.common.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
-import java.util.ArrayList;
+import com.saberrrc.cmy.App;
+
 import java.util.List;
+import java.util.Stack;
 
 public class ActManager {
 
-    public static ArrayList<AppCompatActivity> listOfActivity = new ArrayList<>();
+    private static Stack<AppCompatActivity> activityStack;
+    private static ActManager               instance;
 
     private ActManager() {
     }
-    private static ActManager actManager;
 
     public static ActManager getInstance() {
-        if (actManager == null) {
-            synchronized (ActManager.class) {
-                if (actManager == null) {
-                    actManager = new ActManager();
+        if (instance == null) {
+            instance = new ActManager();
+        }
+        return instance;
+    }
+
+    public void addActivity(AppCompatActivity activity) {
+        if (activityStack == null) {
+            activityStack = new Stack<>();
+        }
+        activityStack.add(activity);
+    }
+
+    /**
+     * 获取当前Activity
+     */
+    public Activity currentActivity() {
+        Activity activity = activityStack.lastElement();
+        return activity;
+    }
+
+    /**
+     * 结束指定的Activity
+     */
+    public void finishActivity(AppCompatActivity activity) {
+        if (activity != null) {
+            activityStack.remove(activity);
+            activity.finish();
+        }
+    }
+
+    /**
+     * 结束指定类名的Activity
+     */
+    public void finishActivity(Class<?>... cls) {
+        if (cls == null || cls.length == 0) {
+            return;
+        }
+        for (AppCompatActivity activity : activityStack) {
+            for (Class<?> cl : cls) {
+                if (activity.getClass().equals(cl)) {
+                    finishActivity(activity);
                 }
             }
         }
-        return actManager;
-    }
 
-    public void addActivity(AppCompatActivity a) {
-        listOfActivity.add(a);
-    }
-
-    public void removeActivity(AppCompatActivity a) {
-        listOfActivity.remove(a);
-    }
-
-    public void killActivity(Class<?> cls) {
-        for (int i = 0; i < listOfActivity.size(); i++) {
-            Activity activity = listOfActivity.get(i);
-            if (activity.getClass().equals(cls)) {
-                activity.finish();
-            }
-        }
     }
 
     public void killFragment(Class<?>... cls) {
         if (cls == null || cls.length == 0) {
             return;
         }
-        for (int k = 0; k < cls.length; k++) {
-            for (int i = 0; i < listOfActivity.size(); i++) {
-                AppCompatActivity activity = listOfActivity.get(i);
+        for (Class<?> cl : cls) {
+            for (AppCompatActivity activity : activityStack) {
                 FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                List<Fragment> fragments = fragmentManager.getFragments();
+                @SuppressLint("RestrictedApi") List<Fragment> fragments = fragmentManager.getFragments();
                 if (fragments == null || fragments.size() == 0) {
                     continue;
                 }
@@ -60,11 +85,38 @@ public class ActManager {
                     if (fragment == null) {
                         continue;
                     }
-                    if (fragment.getClass().equals(cls[k])) {
+                    if (fragment.getClass().equals(cl)) {
                         activity.finish();
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * 结束承܉Activity
+     */
+    public void finishAllActivity() {
+        for (AppCompatActivity appCompatActivity : activityStack) {
+            if (appCompatActivity != null) {
+                appCompatActivity.finish();
+            }
+        }
+        activityStack.clear();
+    }
+
+    /**
+     * 退出应用程序
+     */
+    public void AppExit() {
+        try {
+            finishAllActivity();
+            ActivityManager activityMgr = (ActivityManager) App.getInstance().getSystemService(Context.ACTIVITY_SERVICE);
+            activityMgr.restartPackage(App.getInstance().getPackageName());
+            System.exit(0);
+            android.os.Process.killProcess(android.os.Process.myPid());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
