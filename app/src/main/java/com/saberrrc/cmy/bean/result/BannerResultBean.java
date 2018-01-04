@@ -1,8 +1,10 @@
 package com.saberrrc.cmy.bean.result;
 
+
 import com.saberrrc.cmy.bean.BaseBean;
 
 import java.util.List;
+
 /**
  * Created by dell、 on 2017-9-28.
  {
@@ -36,7 +38,7 @@ public class BannerResultBean extends BaseBean {
      * version : 0.0.1
      */
 
-    private String version;
+    private String         version;
     private List<DataBean> data;
 
     public String getVersion() {
@@ -65,6 +67,26 @@ public class BannerResultBean extends BaseBean {
         private String imgUrl;
         private String level;
         private String platformId;
+        private String activityId;
+
+        public String getActivityId() {
+            return activityId;
+        }
+
+        public void setActivityId(String activityId) {
+            this.activityId = activityId;
+        }
+
+        private String bannerUrl;
+
+
+        public String getBannerUrl() {
+            return bannerUrl;
+        }
+
+        public void setBannerUrl(String bannerUrl) {
+            this.bannerUrl = bannerUrl;
+        }
 
         public String getImgUrl() {
             return imgUrl;

@@ -154,7 +154,7 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     //banner
-    //    compile 'com.youth.banner:banner:1.4.10'
+    compile 'com.youth.banner:banner:1.4.10'  //最新版本
     //自动获取短信验证码
     compile 'tech.michaelx.authcode:authcode:1.0.0'
 }

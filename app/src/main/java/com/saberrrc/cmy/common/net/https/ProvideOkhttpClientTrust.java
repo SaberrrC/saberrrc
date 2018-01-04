@@ -24,19 +24,21 @@ public class ProvideOkhttpClientTrust {
         }
         return privder;
     }
-    public OkHttpClient getOkhttpClient(){
+
+    public OkHttpClient getOkhttpClient() {
         OkHttpClient.Builder mBuilder = new OkHttpClient.Builder();
         mBuilder.sslSocketFactory(createSSLSocketFactory());
         mBuilder.hostnameVerifier(new TrustAllHostnameVerifier());
         OkHttpClient client = mBuilder.build();
         return client;
     }
+
     private static SSLSocketFactory createSSLSocketFactory() {
         SSLSocketFactory ssfFactory = null;
         try {
             // 在这处理证书
             SSLContext sc = SSLContext.getInstance("TLS");
-            sc.init(null,  new TrustManager[] { new TrustAllCerts() }, new SecureRandom());
+            sc.init(null, new TrustManager[]{new TrustAllCerts()}, new SecureRandom());
             ssfFactory = sc.getSocketFactory();
         } catch (Exception e) {
         }

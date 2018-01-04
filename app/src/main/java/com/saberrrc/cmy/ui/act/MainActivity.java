@@ -14,6 +14,7 @@ import com.saberrrc.cmy.common.utils.MPermissionUtils;
 import com.saberrrc.cmy.common.utils.ToastUtils;
 import com.saberrrc.cmy.presenter.Contract.MainContract;
 import com.saberrrc.cmy.presenter.MainPresenter;
+import com.saberrrc.cmy.ui.fragment.RecyclerViewFragment;
 import com.saberrrc.cmy.ui.fragment.TestFragment;
 import com.saberrrc.cmy.ui.view.CusFragmentTabHost;
 
@@ -22,10 +23,10 @@ import org.greenrobot.eventbus.EventBus;
 public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View {
 
     private CusFragmentTabHost mFtTab;
-    private static       Class[]  mFragmentArray    = {TestFragment.class, TestFragment.class, TestFragment.class};
-    private static       String[] mTabTextArray     = {"1", "2", "3"};
-    private static       int[]    imageArray        = {R.drawable.select_home, R.drawable.select_home, R.drawable.select_home};
-    private              long     lastTime          = 0;
+    private static Class[]  mFragmentArray = {TestFragment.class, RecyclerViewFragment.class, TestFragment.class};
+    private static String[] mTabTextArray  = {"1", "2", "3"};
+    private static int[]    imageArray     = {R.drawable.select_home, R.drawable.select_home, R.drawable.select_home};
+    private        long     lastTime       = 0;
 
     @Override
     protected void initInject() {

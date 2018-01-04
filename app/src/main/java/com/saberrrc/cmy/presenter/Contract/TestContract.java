@@ -11,7 +11,7 @@ public interface TestContract {
         void onGetBannerListFailed(Throwable ex, String code, String msg);
     }
 
-    interface Presenter extends BasePresenter<View> {
+    interface Presenter extends BasePresenter<TestContract.View> {
         void getBannerList();
     }
 }

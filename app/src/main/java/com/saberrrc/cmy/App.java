@@ -6,10 +6,10 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.saberrrc.cmy.common.buildconfig.AppBuildConfig;
 import com.saberrrc.cmy.common.crash.Cockroach;
+import com.saberrrc.cmy.common.image.okhttp.OkHttpUrlLoader;
 import com.saberrrc.cmy.common.net.https.ProvideOkhttpClientTrust;
 import com.saberrrc.cmy.di.component.AppComponent;
 import com.saberrrc.cmy.di.component.DaggerAppComponent;
@@ -40,9 +40,7 @@ public class App extends Application {
         initSDK();
         initAutoLayout();
         //initLeakCanary();
-        if (!DEBUG) {
-            initCrash();
-        }
+//        initCrash();
     }
 
     private void initLeakCanary() {
@@ -70,7 +68,9 @@ public class App extends Application {
     }
 
     private void initCrash() {
-
+        if (DEBUG) {
+            return;
+        }
         Cockroach.install(new Cockroach.ExceptionHandler() {
             @Override
             public void handlerException(final Thread thread, final Throwable throwable) {
