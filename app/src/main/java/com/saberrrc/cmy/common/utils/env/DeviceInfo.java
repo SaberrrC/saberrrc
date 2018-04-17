@@ -1,6 +1,7 @@
 package com.saberrrc.cmy.common.utils.env;
 
 import android.Manifest.permission;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
@@ -29,7 +30,7 @@ public class DeviceInfo {
 
     public static String getSimOperatorName() {
         TelephonyManager telManager = (TelephonyManager) App.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
-        String imsi = telManager.getSubscriberId();
+        @SuppressLint("MissingPermission") String imsi = telManager.getSubscriberId();
 
         if (imsi != null) {
             if (imsi.startsWith("46000") || imsi.startsWith("46002")) {
@@ -217,6 +218,7 @@ public class DeviceInfo {
      * @Title:
      * @Description:取得SIM 卡的序列号
      */
+    @SuppressLint("MissingPermission")
     public static String getSimNumber() {
         TelephonyManager telManager = (TelephonyManager) App.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
         return telManager.getSubscriberId();
@@ -228,6 +230,7 @@ public class DeviceInfo {
      * @return
      * @Title: getDeviceId
      */
+    @SuppressLint("MissingPermission")
     public static String getDeviceId() {
         TelephonyManager tm = (TelephonyManager) App.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
         if (null == tm.getDeviceId()) {
@@ -262,6 +265,7 @@ public class DeviceInfo {
      * @Title:
      * @Description:获取本手机号
      */
+    @SuppressLint("MissingPermission")
     public static String getPhoneNumber() {
         TelephonyManager tm = (TelephonyManager) App.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
         return tm.getLine1Number();

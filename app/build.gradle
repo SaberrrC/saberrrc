@@ -20,6 +20,9 @@ android {
             keyPassword "saberrrc"
         }
     }
+//    lintOptions {
+//        abortOnError false
+//    }
 
     buildTypes {
         debug {
