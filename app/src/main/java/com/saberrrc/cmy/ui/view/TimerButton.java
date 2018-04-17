@@ -3,12 +3,12 @@ package com.saberrrc.cmy.ui.view;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import com.saberrrc.cmy.common.utils.StrUtils;
 
-public class TimerButton extends TextView {
+public class TimerButton extends AppCompatTextView {
 
     //config*****begin
     private static final int WHAT_BY_TIMER_BTN = 0x0001;
@@ -29,7 +29,6 @@ public class TimerButton extends TextView {
 
     public TimerButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
     }
 
     public void removeCallbacksAndMessages() {

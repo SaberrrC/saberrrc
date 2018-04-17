@@ -1,5 +1,6 @@
 package com.saberrrc.cmy.common.base;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -165,7 +166,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AutoLayoutAc
 
     public Fragment getVisibleFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        List<Fragment> fragments = fragmentManager.getFragments();
+        @SuppressLint("RestrictedApi") List<Fragment> fragments = fragmentManager.getFragments();
         for (Fragment fragment : fragments) {
             if (fragment != null && fragment.isVisible())
                 return fragment;
