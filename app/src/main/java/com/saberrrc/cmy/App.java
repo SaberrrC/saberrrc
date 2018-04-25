@@ -3,7 +3,6 @@ package com.saberrrc.cmy;
 import android.app.Application;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
@@ -11,6 +10,7 @@ import com.saberrrc.cmy.common.buildconfig.AppBuildConfig;
 import com.saberrrc.cmy.common.crash.Cockroach;
 import com.saberrrc.cmy.common.image.okhttp.OkHttpUrlLoader;
 import com.saberrrc.cmy.common.net.https.ProvideOkhttpClientTrust;
+import com.saberrrc.cmy.common.utils.LogUtil;
 import com.saberrrc.cmy.di.component.AppComponent;
 import com.saberrrc.cmy.di.component.DaggerAppComponent;
 import com.saberrrc.cmy.di.module.AppModule;
@@ -34,7 +34,9 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         //让Glide能用HTTPS
-        Glide.get(this).register(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(ProvideOkhttpClientTrust.getInstance().getOkhttpClient()));
+        Glide.get(this).register(GlideUrl.class,
+                InputStream.class,
+                new OkHttpUrlLoader.Factory(ProvideOkhttpClientTrust.getInstance().getOkhttpClient()));
         app = this;
         initAppComponent();
         initSDK();
@@ -64,7 +66,10 @@ public class App extends Application {
     }
 
     private void initAppComponent() {
-        appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).retrofitModule(new RetrofitModule(this)).build();
+        appComponent = DaggerAppComponent.builder()
+                .appModule(new AppModule(this))
+                .retrofitModule(new RetrofitModule(this))
+                .build();
     }
 
     private void initCrash() {
@@ -79,7 +84,7 @@ public class App extends Application {
                     public void run() {
                         try {
                             //建议使用下面方式在控制台打印异常，这样就可以在Error级别看到红色log
-                            Log.e("AndroidRuntime", "--->CockroachException:" + thread + "<---", throwable);
+                            LogUtil.e("AndroidRuntime", "--->CockroachException:" + thread + "<---", throwable);
                         } catch (Throwable e) {
 
                         }

@@ -1,4 +1,4 @@
-package com.github.lzyzsd.jsbridge.core;
+package com.github.lzyzsd.jsbridge.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -8,6 +8,14 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.webkit.WebView;
+
+import com.github.lzyzsd.jsbridge.core.BridgeUtil;
+import com.github.lzyzsd.jsbridge.core.BridgeWebViewClient;
+import com.github.lzyzsd.jsbridge.core.CallBackFunction;
+import com.github.lzyzsd.jsbridge.core.DefaultHandler;
+import com.github.lzyzsd.jsbridge.core.Message;
+import com.github.lzyzsd.jsbridge.core.WebViewJavascriptBridge;
+import com.github.lzyzsd.jsbridge.type.BridgeHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,11 +28,11 @@ public class BridgeWebView extends WebView implements WebViewJavascriptBridge {
 	private final String TAG = "BridgeWebView";
 
 	public static final String toLoadJs = "WebViewJavascriptBridge.js";
-	Map<String, CallBackFunction> responseCallbacks = new HashMap<String, CallBackFunction>();
-	Map<String, BridgeHandler> messageHandlers = new HashMap<String, BridgeHandler>();
-	BridgeHandler defaultHandler = new DefaultHandler();
+	Map<String, CallBackFunction> responseCallbacks = new HashMap<>();
+	Map<String, BridgeHandler>    messageHandlers   = new HashMap<>();
+	BridgeHandler                 defaultHandler    = new DefaultHandler();
 
-	private List<Message> startupMessage = new ArrayList<Message>();
+	private List<Message> startupMessage = new ArrayList<>();
 
 	public List<Message> getStartupMessage() {
 		return startupMessage;

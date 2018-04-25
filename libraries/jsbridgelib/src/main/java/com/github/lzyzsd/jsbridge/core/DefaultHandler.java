@@ -1,6 +1,8 @@
 package com.github.lzyzsd.jsbridge.core;
 
-public class DefaultHandler implements BridgeHandler{
+import com.github.lzyzsd.jsbridge.type.BridgeHandler;
+
+public class DefaultHandler implements BridgeHandler {
 
 	String TAG = "DefaultHandler";
 	

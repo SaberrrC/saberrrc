@@ -6,6 +6,8 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.github.lzyzsd.jsbridge.view.BridgeWebView;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 

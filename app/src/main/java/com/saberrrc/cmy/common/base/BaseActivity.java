@@ -138,8 +138,9 @@ public abstract class BaseActivity<T extends BasePresenter> extends AutoLayoutAc
     protected void onDestroy() {
         super.onDestroy();
         ActManager.getInstance().killActivity(this);
-        if (mPresenter != null)
+        if (mPresenter != null) {
             mPresenter.detachView();
+        }
         mUnBinder.unbind();
     }
 
@@ -162,7 +163,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AutoLayoutAc
             overridePendingTransition(R.anim.left_in, R.anim.right_out);
         }
     }
-
 
     public Fragment getVisibleFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
