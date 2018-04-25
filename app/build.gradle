@@ -157,9 +157,11 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     //banner
-    implementation 'com.youth.banner:banner:1.4.10'  //最新版本
+    implementation 'com.youth.banner:banner:1.4.10'
+    //最新版本
     //自动获取短信验证码
     implementation 'tech.michaelx.authcode:authcode:1.0.0'
+    implementation project(':libraries:jsbridgelib')
 }
 
 //解决com.android.support依赖问题

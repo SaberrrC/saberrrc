@@ -12,6 +12,7 @@ import com.saberrrc.cmy.R;
 import com.saberrrc.cmy.bean.HomeBannerBean;
 import com.saberrrc.cmy.bean.result.BannerResultBean;
 import com.saberrrc.cmy.common.base.BaseFragment;
+import com.saberrrc.cmy.common.image.GlideRoundTransform;
 import com.saberrrc.cmy.common.utils.DefaultOnPermissionListener;
 import com.saberrrc.cmy.presenter.Contract.RecyclerViewContract;
 import com.saberrrc.cmy.presenter.RecyclerViewPresenter;
@@ -121,7 +122,10 @@ public class RecyclerViewFragment extends BaseFragment<RecyclerViewPresenter> im
                     checkPermission(new DefaultOnPermissionListener(getActivity()) {
                         @Override
                         public void onPermissionGranted() {
-                            Glide.with(App.getInstance()).load((String) path).placeholder(R.mipmap.holder_img).error(R.mipmap.error_img).into(imageView);
+                            Glide.with(App.getInstance()).load(path)
+                                                                        .transform(new GlideRoundTransform(getContext(),20))
+//                                    .bitmapTransform(new RoundedCornersTransformation(getContext(), 30, 0, RoundedCornersTransformation.CornerType.ALL))
+                                    .placeholder(R.mipmap.holder_img).error(R.mipmap.error_img).into(imageView);
                         }
                     });
                 }
@@ -129,7 +133,7 @@ public class RecyclerViewFragment extends BaseFragment<RecyclerViewPresenter> im
                 @Override
                 public ImageView createImageView(Context context) {
                     ImageView imageView = new ImageView(getActivity());
-                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                     return imageView;
                 }
             });
