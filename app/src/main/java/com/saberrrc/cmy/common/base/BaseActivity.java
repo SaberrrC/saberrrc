@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.saberrrc.cmy.App;
 import com.saberrrc.cmy.R;
 import com.saberrrc.cmy.common.utils.ActManager;
 import com.saberrrc.cmy.common.utils.MPermissionUtils;
+import com.saberrrc.cmy.common.utils.StatusBarUtils;
 import com.saberrrc.cmy.di.component.ActivityComponent;
 import com.saberrrc.cmy.di.component.DaggerActivityComponent;
 import com.saberrrc.cmy.di.module.ActivityModule;
@@ -53,7 +55,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AutoLayoutAc
         mUnBinder = ButterKnife.bind(this);
         mContext = this;
         initInject();
-        // StatusBarUtils.setColor(this, Color.TRANSPARENT);
+        StatusBarUtils.setColor(this, Color.LTGRAY);
         if (mPresenter != null) {
             mPresenter.attachView(this);
         }
