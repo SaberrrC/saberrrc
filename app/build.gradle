@@ -159,7 +159,6 @@ dependencies {
     //最新版本
     //自动获取短信验证码
     implementation 'tech.michaelx.authcode:authcode:1.0.0'
-    implementation project(':libraries:jsbridgelib')
 }
 
 //解决com.android.support依赖问题

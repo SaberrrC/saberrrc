@@ -1,1 +1,1 @@
-include ':app', ':libraries:jsbridgelib'
+include ':app'
