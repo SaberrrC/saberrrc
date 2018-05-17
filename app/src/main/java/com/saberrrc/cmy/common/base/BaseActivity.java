@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -24,7 +25,6 @@ import com.saberrrc.cmy.common.utils.StatusBarUtils;
 import com.saberrrc.cmy.di.component.ActivityComponent;
 import com.saberrrc.cmy.di.component.DaggerActivityComponent;
 import com.saberrrc.cmy.di.module.ActivityModule;
-import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public abstract class BaseActivity<T extends BasePresenter> extends AutoLayoutActivity implements BaseView {
+public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity implements BaseView {
 
     @Inject
     protected T        mPresenter;

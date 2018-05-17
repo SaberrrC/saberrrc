@@ -14,14 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--autolayout参数-->
-        <meta-data
-            android:name="design_width"
-            android:value="375"/>
-        <meta-data
-            android:name="design_height"
-            android:value="667"/>
-
         <meta-data
             android:name="com.saberrrc.cmy.common.image.AppGlideModule"
             android:value="GlideModule"/>
@@ -60,8 +52,8 @@
         </activity>
         <activity
             android:name=".ui.act.ShowActivity"
-            android:theme="?android:attr/borderlessButtonStyle"
             android:screenOrientation="portrait"
+            android:theme="?android:attr/borderlessButtonStyle"
             android:windowSoftInputMode="adjustPan"/>
 
     </application>

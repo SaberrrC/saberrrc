@@ -15,7 +15,6 @@ import com.saberrrc.cmy.di.component.AppComponent;
 import com.saberrrc.cmy.di.component.DaggerAppComponent;
 import com.saberrrc.cmy.di.module.AppModule;
 import com.saberrrc.cmy.di.module.RetrofitModule;
-import com.zhy.autolayout.config.AutoLayoutConifg;
 
 import java.io.InputStream;
 
@@ -40,17 +39,12 @@ public class App extends Application {
         app = this;
         initAppComponent();
         initSDK();
-        initAutoLayout();
         //initLeakCanary();
 //        initCrash();
     }
 
     private void initLeakCanary() {
         //LeakCanary.install(this);
-    }
-
-    private void initAutoLayout() {
-        AutoLayoutConifg.getInstance().useDeviceSize();
     }
 
     private void initSDK() {
