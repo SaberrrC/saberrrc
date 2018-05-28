@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.2'
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.saberrrc.cmy"
         minSdkVersion 15
@@ -159,6 +159,10 @@ dependencies {
     //最新版本
     //自动获取短信验证码
     implementation 'tech.michaelx.authcode:authcode:1.0.0'
+
+    //1.1.0 API改动过大，老用户升级需谨慎
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
+    compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-5'//没有使用特殊Header，可以不加这行
 }
 
 //解决com.android.support依赖问题

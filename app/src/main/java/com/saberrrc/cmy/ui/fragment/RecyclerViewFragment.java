@@ -17,6 +17,9 @@ import com.saberrrc.cmy.common.utils.DefaultOnPermissionListener;
 import com.saberrrc.cmy.presenter.Contract.RecyclerViewContract;
 import com.saberrrc.cmy.presenter.RecyclerViewPresenter;
 import com.saberrrc.cmy.ui.adapter.FinalRecycleAdapter;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.youth.banner.Banner;
 import com.youth.banner.loader.ImageLoader;
 
@@ -34,10 +37,24 @@ public class RecyclerViewFragment extends BaseFragment<RecyclerViewPresenter> im
     private List<Object> mDatas = new ArrayList<>();
     private FinalRecycleAdapter mFinalRecycleAdapter;
     private List<Banner> MbList = new ArrayList<>();
+    private RefreshLayout mRefreshLayout;
 
     @Override
     public View createView() {
         View view = creatViewFromId(R.layout.layout_recyclerview);
+        mRefreshLayout = (RefreshLayout)view.findViewById(R.id.refreshLayout);
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+            }
+        });
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
+            }
+        });
         return view;
     }
 
