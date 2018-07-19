@@ -4,13 +4,12 @@ import android.content.res.AssetManager;
 
 import com.saberrrc.cmy.App;
 import com.saberrrc.cmy.BuildConfig;
-import com.saberrrc.cmy.R;
 import com.saberrrc.cmy.common.buildconfig.AppBuildConfig;
 import com.saberrrc.cmy.common.constants.Constant;
+import com.saberrrc.cmy.common.converter.FastJsonConverterFactory;
 import com.saberrrc.cmy.common.net.Api;
 import com.saberrrc.cmy.common.net.CacheInterceptor;
 import com.saberrrc.cmy.common.net.HeadInterceptor;
-import com.saberrrc.cmy.common.net.https.IslandTrustManager;
 import com.saberrrc.cmy.common.net.logging.Level;
 import com.saberrrc.cmy.common.net.logging.LoggingInterceptor;
 
@@ -41,7 +40,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.internal.platform.Platform;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class RetrofitModule {
@@ -73,11 +71,11 @@ public class RetrofitModule {
         //错误重连
         builder.retryOnConnectionFailure(true);
         //设置https
-        //设置https
-        SSLSocketFactory sslSocketFactory = setPemTrust("pem214187085930497.pem");
-        builder.sslSocketFactory(sslSocketFactory);
+        //        SSLSocketFactory sslSocketFactory = setPemTrust("pem214187085930497.pem");
+        //        builder.sslSocketFactory(sslSocketFactory);
+        //信任全部https
         builder.hostnameVerifier(DO_NOT_VERIFY);
-        // builder.sslSocketFactory(sslContext.getSocketFactory());
+        builder.sslSocketFactory(sslContext.getSocketFactory());
         return builder.build();
     }
 
@@ -96,21 +94,22 @@ public class RetrofitModule {
     @Provides
     public SSLContext providesSSLContext() {
         //        jumpTrust();
-        try {
-            KeyStore localTrustStore = KeyStore.getInstance("BKS");
-            InputStream input = context.getResources().openRawResource(R.raw.island_truststore);
-            localTrustStore.load(input, "island".toCharArray());
-            IslandTrustManager trustManager = new IslandTrustManager(localTrustStore);
-            SSLContext sslContext = SSLContext.getInstance("SSL");
-            sslContext.init(null, new TrustManager[]{trustManager}, new java.security.SecureRandom());
-            return sslContext;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        return jumpTrust();
+//        try {
+//            KeyStore localTrustStore = KeyStore.getInstance("BKS");
+//            InputStream input = context.getResources().openRawResource(R.raw.island_truststore);
+//            localTrustStore.load(input, "island".toCharArray());
+//            IslandTrustManager trustManager = new IslandTrustManager(localTrustStore);
+//            SSLContext sslContext = SSLContext.getInstance("SSL");
+//            sslContext.init(null, new TrustManager[]{trustManager}, new java.security.SecureRandom());
+//            return sslContext;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return null;
     }
 
-    private void jumpTrust() {
+    private SSLContext jumpTrust() {
         X509TrustManager xtm = new X509TrustManager() {
             @Override
             public void checkClientTrusted(X509Certificate[] chain, String authType) {
@@ -135,6 +134,7 @@ public class RetrofitModule {
         } catch (KeyManagementException e) {
             e.printStackTrace();
         }
+        return sslContext;
     }
 
     @Provides
@@ -167,7 +167,11 @@ public class RetrofitModule {
     @Provides
     @Singleton
     public Retrofit providesRetrofit(OkHttpClient client) {
-        return new Retrofit.Builder().baseUrl(AppBuildConfig.getInstance().getBaseUrl()).client(client).addConverterFactory(GsonConverterFactory.create()).addCallAdapterFactory(RxJava2CallAdapterFactory.create()).build();
+        return new Retrofit.Builder().baseUrl(AppBuildConfig.getInstance().getBaseUrl())
+                .client(client)
+//                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(FastJsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create()).build();
     }
 
     @Provides
