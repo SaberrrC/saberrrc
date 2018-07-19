@@ -161,8 +161,16 @@ dependencies {
     implementation 'tech.michaelx.authcode:authcode:1.0.0'
 
     //1.1.0 API改动过大，老用户升级需谨慎
-    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
-    compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-5'//没有使用特殊Header，可以不加这行
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-5'//没有使用特殊Header，可以不加这行
+    //weex
+    implementation 'com.alibaba:fastjson:1.2.47'
+    implementation 'com.taobao.android:weex_sdk:0.5.1@aar'
+    //fastjson
+    implementation 'com.alibaba:fastjson:1.2.47'
+    //FileDownloader
+    implementation 'com.liulishuo.filedownloader:library:1.7.4'
+
 }
 
 //解决com.android.support依赖问题

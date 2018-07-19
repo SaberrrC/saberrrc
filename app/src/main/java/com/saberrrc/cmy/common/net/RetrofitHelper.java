@@ -4,6 +4,8 @@ package com.saberrrc.cmy.common.net;
 import com.saberrrc.cmy.App;
 import com.saberrrc.cmy.BuildConfig;
 import com.saberrrc.cmy.common.constants.Constant;
+import com.saberrrc.cmy.common.net.logging.Level;
+import com.saberrrc.cmy.common.net.logging.LoggingInterceptor;
 import com.saberrrc.cmy.common.utils.NetWorkUtil;
 import com.saberrrc.cmy.common.utils.SpUtils;
 
@@ -32,6 +34,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.internal.platform.Platform;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -41,10 +44,10 @@ public class RetrofitHelper {
     private final OkHttpClient mClient;
 
     private OkHttpClient provideClient(OkHttpClient.Builder builder) {
-        if (BuildConfig.DEBUG) {
-            LoggingInterceptor loggingInterceptor = new LoggingInterceptor();
-            builder.addInterceptor(loggingInterceptor);
-        }
+        builder.addInterceptor(new LoggingInterceptor.Builder().loggable(BuildConfig.DEBUG).setLevel(Level.BASIC).log(Platform.INFO).request("Request").response("Response")
+                //                .addHeader("version", BuildConfig.VERSION_NAME)
+                //                .addQueryParam("query", "0")
+                .build());//使用自定义的Log拦截器
         File cacheFile = new File(Constant.NETWORK_CACHE_PATH);
         Cache cache = new Cache(cacheFile, 1024 * 1024 * 1);
         Interceptor cacheInterceptor = new Interceptor() {

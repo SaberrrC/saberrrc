@@ -3,14 +3,16 @@ package com.saberrrc.cmy.di.module;
 import android.content.res.AssetManager;
 
 import com.saberrrc.cmy.App;
+import com.saberrrc.cmy.BuildConfig;
 import com.saberrrc.cmy.R;
 import com.saberrrc.cmy.common.buildconfig.AppBuildConfig;
 import com.saberrrc.cmy.common.constants.Constant;
 import com.saberrrc.cmy.common.net.Api;
 import com.saberrrc.cmy.common.net.CacheInterceptor;
 import com.saberrrc.cmy.common.net.HeadInterceptor;
-import com.saberrrc.cmy.common.net.LoggingInterceptor;
 import com.saberrrc.cmy.common.net.https.IslandTrustManager;
+import com.saberrrc.cmy.common.net.logging.Level;
+import com.saberrrc.cmy.common.net.logging.LoggingInterceptor;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +38,7 @@ import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.internal.platform.Platform;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -53,7 +56,12 @@ public class RetrofitModule {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //设置统一的请求头部参数
         builder.addInterceptor(headInterceptor);
-        builder.addInterceptor(new LoggingInterceptor());//使用自定义的Log拦截器
+        //使用自定义的Log拦截器
+        builder.addInterceptor(new LoggingInterceptor.Builder().loggable(BuildConfig.DEBUG).setLevel(Level.BASIC).log(Platform.INFO).request("Request").response("Response")
+                //.addHeader("version", BuildConfig.VERSION_NAME)
+                //.addQueryParam("query", "0")
+                .build());
+
         //设置缓存
         builder.addNetworkInterceptor(cacheInterceptor);
         builder.addInterceptor(cacheInterceptor);
