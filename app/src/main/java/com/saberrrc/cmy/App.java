@@ -24,8 +24,6 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
-import com.taobao.weex.InitConfig;
-import com.taobao.weex.WXSDKEngine;
 
 import java.io.InputStream;
 
@@ -71,24 +69,24 @@ public class App extends Application {
                 new OkHttpUrlLoader.Factory(ProvideOkhttpClientTrust.getInstance().getOkhttpClient()));
         app = this;
         initAppComponent();
-        initSDK();hhhhhhhhhhhhhg
+        initSDK();
         //initLeakCanary();
 //        initCrash();
-        initWeex();
+//        initWeex();
     }
 
-    private void initWeex() {
-        InitConfig config = new InitConfig
-                .Builder()
-                .setImgAdapter(
-                        new GlideImageAdapterForWeex()
-                )
-                .setWebSocketAdapterFactory(new DefaultWebSocketAdapterFactory())
-                .setJSExceptionAdapter(new JSExceptionAdapter())
-                .setHttpAdapter(new InterceptWXHttpAdapter())
-                .build();
-        WXSDKEngine.initialize(this, config);
-    }
+//    private void initWeex() {
+//        InitConfig config = new InitConfig
+//                .Builder()
+//                .setImgAdapter(
+//                        new GlideImageAdapterForWeex()
+//                )
+//                .setWebSocketAdapterFactory(new DefaultWebSocketAdapterFactory())
+//                .setJSExceptionAdapter(new JSExceptionAdapter())
+//                .setHttpAdapter(new InterceptWXHttpAdapter())
+//                .build();
+//        WXSDKEngine.initialize(this, config);
+//    }
 
     private void initLeakCanary() {
         //LeakCanary.install(this);
