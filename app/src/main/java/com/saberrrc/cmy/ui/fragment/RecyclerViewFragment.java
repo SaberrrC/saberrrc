@@ -7,12 +7,12 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.saberrrc.cmy.App;
 import com.saberrrc.cmy.R;
 import com.saberrrc.cmy.bean.HomeBannerBean;
 import com.saberrrc.cmy.bean.result.BannerResultBean;
 import com.saberrrc.cmy.common.base.BaseFragment;
-import com.saberrrc.cmy.common.image.GlideRoundTransform;
 import com.saberrrc.cmy.common.utils.DefaultOnPermissionListener;
 import com.saberrrc.cmy.presenter.Contract.RecyclerViewContract;
 import com.saberrrc.cmy.presenter.RecyclerViewPresenter;
@@ -42,7 +42,7 @@ public class RecyclerViewFragment extends BaseFragment<RecyclerViewPresenter> im
     @Override
     public View createView() {
         View view = creatViewFromId(R.layout.layout_recyclerview);
-        mRefreshLayout = (RefreshLayout)view.findViewById(R.id.refreshLayout);
+        mRefreshLayout = (RefreshLayout) view.findViewById(R.id.refreshLayout);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
@@ -139,10 +139,21 @@ public class RecyclerViewFragment extends BaseFragment<RecyclerViewPresenter> im
                     checkPermission(new DefaultOnPermissionListener(getActivity()) {
                         @Override
                         public void onPermissionGranted() {
-                            Glide.with(App.getInstance()).load(path)
-                                                                        .transform(new GlideRoundTransform(getContext(),20))
-//                                    .bitmapTransform(new RoundedCornersTransformation(getContext(), 30, 0, RoundedCornersTransformation.CornerType.ALL))
-                                    .placeholder(R.mipmap.holder_img).error(R.mipmap.error_img).into(imageView);
+
+                            //                            RoundedCorners roundedCorners = new RoundedCorners(6);
+                            //                            RequestOptions mRequestOptions = RequestOptions.circleCropTransform().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true);
+                            //                            Glide.with(App.getInstance()).load(path).apply(mRequestOptions)
+                            //                                    .bitmapTransform(new RoundedCornersTransformation(getContext(), 30, 0, RoundedCornersTransformation.CornerType.ALL))
+                            //                                    .placeholder(R.mipmap.holder_img).error(R.mipmap.error_img).into(imageView);
+
+                            //                            RequestOptions options = RequestOptions.bitmapTransform(roundedCorners).override(300, 300);
+                            //                            Glide.with(App.getInstance()).load(path).apply(options)
+                            //                                    .placeholder(R.mipmap.holder_img).error(R.mipmap.error_img).into(imageView);
+
+                            RequestOptions options = RequestOptions.circleCropTransform();//圆形图片  好多的图片形式都是这么设置的
+                            options.placeholder(R.mipmap.holder_img);//占位图
+                            Glide.with(App.getInstance()).load(path).apply(options).into(imageView);
+
                         }
                     });
                 }

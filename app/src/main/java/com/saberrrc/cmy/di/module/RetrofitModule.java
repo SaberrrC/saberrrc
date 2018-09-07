@@ -99,7 +99,7 @@ public class RetrofitModule {
 //            KeyStore localTrustStore = KeyStore.getInstance("BKS");
 //            InputStream input = context.getResources().openRawResource(R.raw.island_truststore);
 //            localTrustStore.load(input, "island".toCharArray());
-//            IslandTrustManager trustManager = new IslandTrustManager(localTrustStore);
+//            AppTrustManager trustManager = new AppTrustManager(localTrustStore);
 //            SSLContext sslContext = SSLContext.getInstance("SSL");
 //            sslContext.init(null, new TrustManager[]{trustManager}, new java.security.SecureRandom());
 //            return sslContext;

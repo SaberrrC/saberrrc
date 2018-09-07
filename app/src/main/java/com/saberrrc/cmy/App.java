@@ -5,12 +5,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.GlideUrl;
 import com.saberrrc.cmy.common.buildconfig.AppBuildConfig;
 import com.saberrrc.cmy.common.crash.Cockroach;
-import com.saberrrc.cmy.common.image.okhttp.OkHttpUrlLoader;
-import com.saberrrc.cmy.common.net.https.ProvideOkhttpClientTrust;
 import com.saberrrc.cmy.common.utils.LogUtil;
 import com.saberrrc.cmy.di.component.AppComponent;
 import com.saberrrc.cmy.di.component.DaggerAppComponent;
@@ -24,8 +20,6 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
-
-import java.io.InputStream;
 
 public class App extends Application {
 
@@ -62,29 +56,30 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         //让Glide能用HTTPS
-        Glide.get(this).register(GlideUrl.class,
-                InputStream.class,
-                new OkHttpUrlLoader.Factory(ProvideOkhttpClientTrust.getInstance().getOkhttpClient()));
+        //        Glide3配置
+        //        Glide.get(this).register(GlideUrl.class,
+        //                InputStream.class,
+        //                new OkHttpUrlLoader.Factory(ProvideOkhttpClientTrust.getInstance().getOkhttpClient()));
         app = this;
         initAppComponent();
         initSDK();
         //initLeakCanary();
-//        initCrash();
-//        initWeex();
+        //        initCrash();
+        //        initWeex();
     }
 
-//    private void initWeex() {
-//        InitConfig config = new InitConfig
-//                .Builder()
-//                .setImgAdapter(
-//                        new GlideImageAdapterForWeex()
-//                )
-//                .setWebSocketAdapterFactory(new DefaultWebSocketAdapterFactory())
-//                .setJSExceptionAdapter(new JSExceptionAdapter())
-//                .setHttpAdapter(new InterceptWXHttpAdapter())
-//                .build();
-//        WXSDKEngine.initialize(this, config);
-//    }
+    //    private void initWeex() {
+    //        InitConfig config = new InitConfig
+    //                .Builder()
+    //                .setImgAdapter(
+    //                        new GlideImageAdapterForWeex()
+    //                )
+    //                .setWebSocketAdapterFactory(new DefaultWebSocketAdapterFactory())
+    //                .setJSExceptionAdapter(new JSExceptionAdapter())
+    //                .setHttpAdapter(new InterceptWXHttpAdapter())
+    //                .build();
+    //        WXSDKEngine.initialize(this, config);
+    //    }
 
     private void initLeakCanary() {
         //LeakCanary.install(this);
@@ -103,10 +98,7 @@ public class App extends Application {
     }
 
     private void initAppComponent() {
-        appComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(this))
-                .retrofitModule(new RetrofitModule(this))
-                .build();
+        appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).retrofitModule(new RetrofitModule(this)).build();
     }
 
     private void initCrash() {

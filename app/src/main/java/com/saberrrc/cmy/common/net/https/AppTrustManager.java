@@ -11,7 +11,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
-public class IslandTrustManager implements X509TrustManager {
+public class AppTrustManager implements X509TrustManager {
 
 
     static class LocalStoreX509TrustManager implements X509TrustManager {
@@ -65,18 +65,15 @@ public class IslandTrustManager implements X509TrustManager {
 
     private X509Certificate[] acceptedIssuers;
 
-    public IslandTrustManager(KeyStore localKeyStore) {
+    public AppTrustManager(KeyStore localKeyStore) {
         try {
             TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
             tmf.init((KeyStore) null);
-
             defaultTrustManager = findX509TrustManager(tmf);
             if (defaultTrustManager == null) {
                 throw new IllegalStateException("Couldn't find X509TrustManager");
             }
-
             localTrustManager = new LocalStoreX509TrustManager(localKeyStore);
-
             List<X509Certificate> allIssuers = new ArrayList<X509Certificate>();
             for (X509Certificate cert : defaultTrustManager.getAcceptedIssuers()) {
                 allIssuers.add(cert);

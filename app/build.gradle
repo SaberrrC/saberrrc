@@ -1,12 +1,15 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+//apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.1'
     defaultConfig {
         applicationId "com.saberrrc.cmy"
         minSdkVersion 15
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -110,76 +113,80 @@ static def devHttpUrl() {
     "\"https://loanstore.sd-bao.com/app/v1/\""
 }
 
-static def devJSUrl() {
-    "\"http://120.27.220.25/index.html#/terminal/advertisement\""
-}
-
-static def initDebugField(buildType) {
-    buildType.buildConfigField("String", "HTTP_URL", devHttpUrl())
-    buildType.buildConfigField("String", "JS_URL", devJSUrl())
-}
-
-static def initReleaseField(buildType) {
-    initDebugField(buildType)
-}
-
 dependencies {
+    configurations {
+        all*.exclude group: 'com.android.support', module: 'support-v13'
+    }
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    //    compile 'com.android.support:appcompat-v7:25.4.0'
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:appcompat-v7:28.0.0-rc02'
+    implementation 'com.android.support:support-v4:28.0.0-rc02'
+    //    implementation 'com.android.support:design:27.1.1'
     testImplementation 'junit:junit:4.12'
+    implementation "com.android.support:recyclerview-v7:28.0.0-rc02"
     //retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     /*rxjava*/
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
     //dagger2
     implementation 'com.google.dagger:dagger:2.15'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.15'
     //butterknife
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    /*glide + okhttp3-integration*/
-    implementation 'com.android.support:support-v4:27.1.1'
-    implementation 'com.github.bumptech.glide:okhttp3-integration:1.5.0@aar'
-    implementation 'jp.wasabeef:glide-transformations:2.0.2'
     /*eventbus*/
     implementation 'org.greenrobot:eventbus:3.1.1'
-    /*LeakCanary*/
+    // LeakCanary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.1'
     //banner
     implementation 'com.youth.banner:banner:1.4.10'
-    //自动获取短信验证码
-//    implementation 'tech.michaelx.authcode:authcode:1.0.0'
-
-    //1.1.0 API改动过大，老用户升级需谨慎
+    //SmartRefreshLayout
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
-    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-5'//没有使用特殊Header，可以不加这行
-    //weex
-//    implementation 'com.alibaba:fastjson:1.2.47'
-//    implementation 'com.taobao.android:weex_sdk:0.16.0@aar'
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-5'
     //fastjson
     implementation 'com.alibaba:fastjson:1.2.47'
     //FileDownloader
     implementation 'com.liulishuo.filedownloader:library:1.7.4'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    /*glide + okhttp3-integration*/
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    implementation 'com.github.bumptech.glide:okhttp3-integration:4.8.0'
+    //anko
+    implementation "org.jetbrains.anko:anko:$anko_version"
+}
+//com.saberrrc.cmy.BuildConfig 生成对应参数
+static def devJSUrl() {
+    "\"http://120.27.220.25/index.html#/terminal/advertisement\""
+}
 
+static def initDebugField(buildType) {
+    buildType.buildConfigField("String", "HTTP_URL", devHttpUrl())
+//    buildType.buildConfigField("String", "JS_URL", devJSUrl())
+}
+
+static def initReleaseField(buildType) {
+    initDebugField(buildType)
 }
 
 //解决com.android.support依赖问题
-configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        def requested = details.requested
-        if (requested.group == 'com.android.support') {
-            if (!requested.name.startsWith("multidex")) {
-                details.useVersion '25.3.1'
-            }
-        }
-    }
+//configurations.all {
+//    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+//        def requested = details.requested
+//        if (requested.group == 'com.android.support') {
+//            if (!requested.name.startsWith("multidex")) {
+//                details.useVersion '25.3.1'
+//            }
+//        }
+//    }
+//}
+repositories {
+    mavenCentral()
 }

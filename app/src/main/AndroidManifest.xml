@@ -14,10 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <meta-data
-            android:name="com.saberrrc.cmy.common.image.AppGlideModule"
-            android:value="GlideModule"/>
-
         <!--多渠道打包-->
         <meta-data
             android:name="UMENG_CHANNEL"
